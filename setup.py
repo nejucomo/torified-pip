@@ -1,9 +1,19 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
+from setuptools.command.install import install
+import subprocess
 
 
 PACKAGE = 'torified_pip'
+EXECUTABLE = PACKAGE.replace('_', '-')
+
+
+class PostInstallCommand (install):
+    def run(self):
+        install.run(self)
+        subprocess.check_call([EXECUTABLE])
+
 
 setup(
     name=PACKAGE,
@@ -20,10 +30,11 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            '{} = {}.main:main'.format(
-                PACKAGE.replace('_', '-'),
-                PACKAGE,
-            )
+            '{} = {}.main:main'.format(EXECUTABLE, PACKAGE),
         ],
-    }
+    },
+
+    cmdclass={
+        'install': PostInstallCommand,
+    },
 )
