@@ -14,6 +14,7 @@ setup(
     license='GPLv3',
     url='https://github.com/nejucomo/{}'.format(PACKAGE),
     install_requires=[
+        'pip >= 18.0',
     ],
 
     packages=find_packages(),
